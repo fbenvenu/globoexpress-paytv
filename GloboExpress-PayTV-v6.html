@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GloboExpress Pay TV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+/* ─────────────────────────────────────────
+   DESIGN TOKENS
+───────────────────────────────────────── */
+:root, [data-theme="light"] {
+  --f-display: 'Plus Jakarta Sans', sans-serif;
+  --f-body:    'Inter', sans-serif;
+
+  --tx-xs:   clamp(0.68rem, 0.64rem + 0.18vw, 0.76rem);
+  --tx-sm:   clamp(0.8rem,  0.76rem + 0.2vw,  0.88rem);
+  --tx-base: clamp(0.88rem, 0.84rem + 0.22vw, 0.96rem);
+  --tx-md:   clamp(1rem,    0.94rem + 0.3vw,  1.1rem);
+  --tx-lg:   clamp(1.15rem, 1rem    + 0.7vw,  1.4rem);
+  --tx-xl:   clamp(1.5rem,  1.2rem  + 1.4vw,  2.1rem);
+  --tx-2xl:  clamp(1.9rem,  1.4rem  + 2vw,    2.8rem);
+
+  --sp-1:  0.25rem; --sp-2: 0.5rem;  --sp-3: 0.75rem; --sp-4: 1rem;
+  --sp-5:  1.25rem; --sp-6: 1.5rem;  --sp-8: 2rem;    --sp-10: 2.5rem;
+  --sp-12: 3rem;    --sp-16: 4rem;
+
+  --r-xs: 0.3rem; --r-sm: 0.45rem; --r-md: 0.65rem;
+  --r-lg: 1rem;   --r-xl: 1.25rem; --r-2xl: 1.75rem; --r-full: 9999px;
+
+  --ease:     cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:  cubic-bezier(0.4, 0, 1, 1);
+  --dur-fast: 150ms;
+  --dur:      220ms;
+  --dur-slow: 350ms;
+
+  /* ── Palette ── */
+  --bg:        #f2f5fc;
+  --bg2:       #e8edf8;
+  --surf:      #ffffff;
+  --surf2:     #f8faff;
+  --surf3:     #f0f4fc;
+  --surf4:     #e6ecf8;
+
+  --bdr:       rgba(60,100,200,0.11);
+  --bdr2:      rgba(60,100,200,0.2);
+  --bdr3:      rgba(60,100,200,0.28);
+  --div:       rgba(60,100,200,0.08);
+
+  --tx:        #0b1526;
+  --tx2:       #344870;
+  --tx3:       #7080a0;
+  --tx4:       #a8b8d0;
+  --txinv:     #ffffff;
+
+  --blu:       #1847d4;
+  --blu2:      #1038b8;
+  --blu3:      #0c2d9a;
+  --blu-lo:    #dce8ff;
+  --blu-glow:  rgba(24,71,212,0.16);
+  --blu-glow2: rgba(24,71,212,0.08);
+
+  --red:       #d42030;
+  --red-lo:    #fde8ea;
+  --grn:       #0b8a5a;
+  --grn-lo:    #d4f5e8;
+  --amb:       #c07800;
+  --amb-lo:    #fef3d0;
+
+  --sh-xs: 0 1px 2px rgba(11,21,38,0.05);
+  --sh-sm: 0 2px 8px rgba(11,21,38,0.07), 0 0 0 1px var(--bdr);
+  --sh-md: 0 6px 24px rgba(11,21,38,0.09), 0 1px 4px rgba(11,21,38,0.05), 0 0 0 1px var(--bdr);
+  --sh-lg: 0 16px 48px rgba(11,21,38,0.12), 0 4px 12px rgba(11,21,38,0.06), 0 0 0 1px var(--bdr);
+  --sh-blu: 0 0 0 3px var(--blu-glow), 0 0 0 1px var(--blu);
+
+  --sidebar-w: 260px;
+  --header-h:  64px;
+}
+
+[data-theme="dark"] {
+  --bg:    #070c18; --bg2: #0a1020;
+  --surf:  #0f1828; --surf2: #141f33; --surf3: #192540; --surf4: #1f2d4c;
+  --bdr:   rgba(80,130,255,0.1); --bdr2: rgba(80,130,255,0.18); --bdr3: rgba(80,130,255,0.28);
+  --div:   rgba(80,130,255,0.07);
+  --tx:    #dde8f8; --tx2: #8da0c4; --tx3: #4a5e80; --tx4: #2d3e5a; --txinv: #070c18;
+  --blu:   #4d82ff; --blu2: #6a9aff; --blu3: #87b2ff;
+  --blu-lo: #0d1e40; --blu-glow: rgba(77,130,255,0.22); --blu-glow2: rgba(77,130,255,0.1);
+  --red:   #ff5060; --red-lo: #2a0a10;
+  --grn:   #28d890; --grn-lo: #062518;
+  --amb:   #f0b030; --amb-lo: #1e1400;
+  --sh-xs: 0 1px 2px rgba(0,0,0,0.3);
+  --sh-sm: 0 2px 8px rgba(0,0,0,0.28), 0 0 0 1px var(--bdr);
+  --sh-md: 0 6px 24px rgba(0,0,0,0.35), 0 0 0 1px var(--bdr);
+  --sh-lg: 0 16px 48px rgba(0,0,0,0.45), 0 0 0 1px var(--bdr);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) {
+  --bg:#070c18;--bg2:#0a1020;--surf:#0f1828;--surf2:#141f33;--surf3:#192540;--surf4:#1f2d4c;
+  --bdr:rgba(80,130,255,0.1);--bdr2:rgba(80,130,255,0.18);--bdr3:rgba(80,130,255,0.28);--div:rgba(80,130,255,0.07);
+  --tx:#dde8f8;--tx2:#8da0c4;--tx3:#4a5e80;--tx4:#2d3e5a;--txinv:#070c18;
+  --blu:#4d82ff;--blu2:#6a9aff;--blu3:#87b2ff;--blu-lo:#0d1e40;--blu-glow:rgba(77,130,255,0.22);--blu-glow2:rgba(77,130,255,0.1);
+  --red:#ff5060;--red-lo:#2a0a10;--grn:#28d890;--grn-lo:#062518;
+}}
+
+/* ─────────────────────────────────────────
+   RESET & BASE
+───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
+body { font-family: var(--f-body); font-size: var(--tx-base); color: var(--tx); background: var(--bg); min-height: 100dvh; line-height: 1.6; }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: none; }
+:focus-visible { outline: 2px solid var(--blu); outline-offset: 3px; border-radius: var(--r-sm); }
+::selection { background: var(--blu-glow); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; } }
+
+/* ─────────────────────────────────────────
+   APP SHELL
+───────────────────────────────────────── */
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: 100dvh;
+}
+
+/* ─────────────────────────────────────────
+   SIDEBAR
+───────────────────────────────────────── */
+.sidebar {
+  background: var(--surf);
+  border-right: 1px solid var(--bdr);
+  position: sticky; top: 0;
+  height: 100dvh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+/* Brand strip */
+.sb-brand {
+  padding: var(--sp-6) var(--sp-5) var(--sp-5);
+  background: linear-gradient(160deg, var(--blu) 0%, var(--blu3) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.sb-brand::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 120% 80% at 110% 110%, rgba(255,255,255,0.08) 0%, transparent 60%);
+}
+.sb-brand::after {
+  content: '';
+  position: absolute; right: -30px; top: -30px;
+  width: 100px; height: 100px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.1);
+}
+.sb-logo {
+  display: flex; align-items: center; gap: var(--sp-3);
+  position: relative; z-index: 1;
+  margin-bottom: var(--sp-4);
+}
+.sb-logo-mark {
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+}
+.sb-name {
+  font-family: var(--f-display);
+  font-size: var(--tx-md);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.sb-name span { color: rgba(255,255,255,0.7); font-weight: 400; }
+.sb-sub {
+  font-size: var(--tx-xs);
+  color: rgba(255,255,255,0.6);
+  margin-top: 2px;
+}
+.sb-pill {
+  display: inline-flex; align-items: center; gap: var(--sp-1);
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--r-full);
+  padding: 4px var(--sp-3);
+  font-size: var(--tx-xs);
+  color: rgba(255,255,255,0.9);
+  font-weight: 600; letter-spacing: 0.04em;
+  position: relative; z-index: 1;
+  backdrop-filter: blur(8px);
+}
+
+/* Nav */
+.sb-nav { padding: var(--sp-5) var(--sp-3); flex: 1; }
+.sb-nav-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--tx3);
+  padding: 0 var(--sp-3) var(--sp-2);
+}
+.sb-nav-item {
+  display: flex; align-items: center; gap: var(--sp-3);
+  width: 100%; padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md); font-size: var(--tx-sm);
+  font-weight: 500; color: var(--tx3);
+  border: none; background: none; cursor: pointer;
+  text-align: left; margin-bottom: 2px;
+  transition: all var(--dur-fast) var(--ease);
+}
+.sb-nav-item:hover { background: var(--surf3); color: var(--tx2); }
+.sb-nav-item.active {
+  background: var(--blu-lo); color: var(--blu); font-weight: 600;
+}
+.sb-nav-item svg { flex-shrink: 0; opacity: 0.8; }
+.sb-nav-item.active svg { opacity: 1; }
+
+.sb-footer {
+  padding: var(--sp-4) var(--sp-5);
+  border-top: 1px solid var(--div);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sb-footer-txt { font-size: var(--tx-xs); color: var(--tx3); }
+.sb-footer-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--grn);
+  box-shadow: 0 0 6px var(--grn);
+}
+
+/* ─────────────────────────────────────────
+   RIGHT COLUMN
+───────────────────────────────────────── */
+.right-col {
+  display: flex; flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* ─────────────────────────────────────────
+   TOPBAR
+───────────────────────────────────────── */
+.topbar {
+  height: var(--header-h);
+  background: var(--surf);
+  border-bottom: 1px solid var(--bdr);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--sp-8);
+  position: sticky; top: 0; z-index: 50;
+}
+.topbar-left { display: flex; align-items: center; gap: var(--sp-3); }
+.breadcrumb {
+  display: flex; align-items: center; gap: var(--sp-2);
+  font-size: var(--tx-xs);
+}
+.breadcrumb a, .breadcrumb span { color: var(--tx3); text-decoration: none; }
+.breadcrumb .bc-sep { opacity: 0.4; }
+.breadcrumb .bc-cur { color: var(--tx2); font-weight: 600; }
+.topbar-right { display: flex; align-items: center; gap: var(--sp-3); }
+
+.topbar-divider { width: 1px; height: 20px; background: var(--bdr2); }
+
+.tb-btn {
+  width: 34px; height: 34px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--bdr2);
+  background: var(--surf3);
+  color: var(--tx3);
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--dur-fast) var(--ease);
+}
+.tb-btn:hover { background: var(--surf4); color: var(--tx2); border-color: var(--bdr3); }
+
+.user-chip {
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-1) var(--sp-3) var(--sp-1) 5px;
+  background: var(--surf3);
+  border: 1px solid var(--bdr2);
+  border-radius: var(--r-full);
+  font-size: var(--tx-xs); font-weight: 600; color: var(--tx2);
+  cursor: default;
+}
+.user-ava {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blu) 0%, var(--blu3) 100%);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 9px; font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────
+   CONTENT
+───────────────────────────────────────── */
+.content {
+  flex: 1;
+  padding: var(--sp-10) var(--sp-10);
+  max-width: 960px;
+  width: 100%;
+}
+
+/* ── Page transitions ── */
+.page { display: none; }
+.page.active {
+  display: block;
+  animation: pgIn var(--dur-slow) var(--ease) both;
+}
+@keyframes pgIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─────────────────────────────────────────
+   PAGE HEADER
+───────────────────────────────────────── */
+.pg-header { margin-bottom: var(--sp-8); }
+
+.pg-tag {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  background: var(--blu-lo);
+  color: var(--blu);
+  border: 1px solid color-mix(in srgb, var(--blu) 18%, transparent);
+  border-radius: var(--r-full);
+  padding: 5px var(--sp-3);
+  font-size: var(--tx-xs); font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: var(--sp-4);
+}
+
+.pg-title {
+  font-family: var(--f-display);
+  font-size: var(--tx-2xl);
+  font-weight: 800;
+  color: var(--tx);
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  margin-bottom: var(--sp-3);
+}
+.pg-title em {
+  font-style: normal;
+  background: linear-gradient(90deg, var(--blu) 0%, #6a8fff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pg-desc {
+  font-size: var(--tx-sm); color: var(--tx3);
+  max-width: 60ch; line-height: 1.7;
+}
+
+/* ─────────────────────────────────────────
+   TYPE SWITCHER
+───────────────────────────────────────── */
+.switcher {
+  display: inline-flex;
+  background: var(--surf);
+  border: 1px solid var(--bdr2);
+  border-radius: var(--r-xl);
+  padding: 4px;
+  gap: 3px;
+  margin-bottom: var(--sp-8);
+  box-shadow: var(--sh-sm);
+}
+.sw-opt {
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: 9px var(--sp-6);
+  border-radius: calc(var(--r-xl) - 4px);
+  font-size: var(--tx-sm); font-weight: 600;
+  color: var(--tx3); border: none; background: none;
+  cursor: pointer;
+  transition: all var(--dur) var(--ease);
+  white-space: nowrap;
+}
+.sw-opt:hover { color: var(--tx2); background: var(--surf3); }
+.sw-opt.active {
+  background: var(--blu);
+  color: #fff;
+  box-shadow: 0 2px 12px var(--blu-glow), 0 1px 3px rgba(0,0,0,0.12);
+}
+.sw-opt.active svg { opacity: 1; }
+.sw-opt svg { opacity: 0.7; }
+
+/* ─────────────────────────────────────────
+   FORM CARDS
+───────────────────────────────────────── */
+.fcard {
+  background: var(--surf);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r-2xl);
+  box-shadow: var(--sh-md);
+  margin-bottom: var(--sp-5);
+  transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.fcard:hover {
+  box-shadow: var(--sh-lg);
+  border-color: var(--bdr2);
+}
+
+.fcard-head {
+  display: flex; align-items: center; gap: var(--sp-4);
+  padding: var(--sp-5) var(--sp-6);
+  background: var(--surf2);
+  border-bottom: 1px solid var(--div);
+  border-radius: var(--r-2xl) var(--r-2xl) 0 0;
+}
+.fcard-icon {
+  width: 38px; height: 38px; flex-shrink: 0;
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.fcard-icon.blue { background: var(--blu-lo); color: var(--blu); }
+.fcard-icon.red  { background: var(--red-lo); color: var(--red); }
+.fcard-icon.grn  { background: var(--grn-lo); color: var(--grn); }
+
+.fcard-title { font-size: var(--tx-md); font-weight: 700; color: var(--tx); line-height: 1.2; }
+.fcard-sub   { font-size: var(--tx-xs); color: var(--tx3); margin-top: 2px; }
+
+.fcard-body { padding: var(--sp-6); }
+
+/* ─────────────────────────────────────────
+   GRID
+───────────────────────────────────────── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-5); }
+.s2 { grid-column: span 2; }
+.s3 { grid-column: span 3; }
+
+/* ─────────────────────────────────────────
+   FIELDS
+───────────────────────────────────────── */
+.field { display: flex; flex-direction: column; gap: var(--sp-2); }
+
+.field-label {
+  font-size: var(--tx-xs); font-weight: 700;
+  color: var(--tx2); letter-spacing: 0.03em;
+  display: flex; align-items: center; gap: 4px;
+}
+.field-label .req { color: var(--red); font-size: 10px; }
+.field-label .note { color: var(--tx4); font-weight: 400; font-size: 10px; margin-left: 2px; }
+
+.inp, .sel {
+  width: 100%; padding: 11px var(--sp-4);
+  background: var(--bg);
+  border: 1.5px solid var(--bdr2);
+  border-radius: var(--r-md);
+  font-size: var(--tx-sm);
+  color: var(--tx);
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+.inp::placeholder { color: var(--tx4); }
+.inp:hover, .sel:hover { border-color: color-mix(in srgb, var(--blu) 35%, var(--bdr2)); background: var(--surf); }
+.inp:focus, .sel:focus {
+  border-color: var(--blu);
+  background: var(--surf);
+  box-shadow: var(--sh-blu);
+}
+.inp.err { border-color: var(--red); }
+.inp.err:focus { box-shadow: 0 0 0 3px rgba(212,32,48,0.14), 0 0 0 1px var(--red); }
+
+.sel {
+  appearance: none; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237080a0' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: var(--sp-10);
+}
+
+.ferr {
+  font-size: var(--tx-xs); color: var(--red);
+  display: none; align-items: center; gap: 4px;
+}
+.ferr.show { display: flex; }
+
+/* ─────────────────────────────────────────
+   MULTI-SELECT
+───────────────────────────────────────── */
+.ms { position: relative; }
+.ms-trig {
+  width: 100%; min-height: 44px;
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--bg); border: 1.5px solid var(--bdr2);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-2); cursor: pointer;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast), background var(--dur-fast);
+  user-select: none;
+}
+.ms-trig:hover { border-color: color-mix(in srgb, var(--blu) 35%, var(--bdr2)); background: var(--surf); }
+.ms-trig.open, .ms-trig:focus-within {
+  border-color: var(--blu); background: var(--surf); box-shadow: var(--sh-blu);
+}
+.ms-trig.err { border-color: var(--red); }
+.ms-tags-row { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; min-height: 24px; align-items: center; }
+.ms-ph { font-size: var(--tx-sm); color: var(--tx4); }
+.ms-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--blu-lo); color: var(--blu);
+  border: 1px solid color-mix(in srgb, var(--blu) 22%, transparent);
+  border-radius: var(--r-sm);
+  padding: 2px 6px 2px var(--sp-2);
+  font-size: 11px; font-weight: 700;
+}
+.ms-tag-x { cursor: pointer; opacity: 0.5; font-size: 14px; line-height: 1; transition: opacity var(--dur-fast); }
+.ms-tag-x:hover { opacity: 1; }
+.ms-chevron { color: var(--tx3); flex-shrink: 0; transition: transform var(--dur) var(--ease); }
+.ms-trig.open .ms-chevron { transform: rotate(180deg); }
+
+.ms-drop {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0; right: 0;
+  z-index: 9999;
+  background: var(--surf);
+  border: 1.5px solid var(--bdr2);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-lg);
+  overflow: hidden;
+  display: none;
+  min-width: 260px;
+}
+.ms-drop.open {
+  display: block;
+  animation: dropIn 180ms var(--ease) both;
+}
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ms-search-row {
+  display: flex; align-items: center; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-3);
+  border-bottom: 1px solid var(--div);
+  background: var(--surf2);
+}
+.ms-search-row svg { color: var(--tx3); flex-shrink: 0; }
+.ms-search-inp {
+  flex: 1; background: none; border: none; outline: none;
+  font-size: var(--tx-sm); color: var(--tx);
+}
+.ms-search-inp::placeholder { color: var(--tx4); }
+.ms-list { max-height: 240px; overflow-y: auto; padding: var(--sp-1); }
+.ms-opt {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: 9px var(--sp-3); cursor: pointer;
+  font-size: var(--tx-sm); color: var(--tx2);
+  border-radius: var(--r-md);
+  transition: background var(--dur-fast);
+}
+.ms-opt:hover { background: var(--surf3); }
+.ms-opt.sel { background: var(--blu-lo); color: var(--blu); font-weight: 600; }
+.ms-chk {
+  width: 16px; height: 16px; border-radius: 4px;
+  border: 1.5px solid var(--bdr3); background: var(--bg); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--dur-fast);
+}
+.ms-opt.sel .ms-chk { background: var(--blu); border-color: var(--blu); }
+
+/* ─────────────────────────────────────────
+   DIVIDER LABEL
+───────────────────────────────────────── */
+.divlabel {
+  display: flex; align-items: center; gap: var(--sp-3);
+  margin: var(--sp-6) 0 var(--sp-5);
+  font-size: var(--tx-xs); font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.divlabel::before, .divlabel::after {
+  content: ''; flex: 1; height: 1px; background: var(--div);
+}
+.divlabel.red { color: var(--red); }
+.divlabel.grn { color: var(--grn); }
+
+/* ─────────────────────────────────────────
+   ACTION BAR
+───────────────────────────────────────── */
+.action-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-4);
+  background: var(--surf);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r-2xl);
+  padding: var(--sp-4) var(--sp-6);
+  box-shadow: var(--sh-sm);
+  margin-top: var(--sp-2);
+}
+.action-hint {
+  display: flex; align-items: center; gap: var(--sp-2);
+  font-size: var(--tx-xs); color: var(--tx3);
+}
+.action-hint strong { color: var(--tx2); }
+.action-btns { display: flex; gap: var(--sp-3); align-items: center; }
+
+/* ─────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  padding: 10px var(--sp-5);
+  border-radius: var(--r-md);
+  font-family: var(--f-display);
+  font-size: var(--tx-sm); font-weight: 700;
+  border: 1.5px solid transparent; cursor: pointer;
+  transition: all var(--dur) var(--ease);
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--blu); color: #fff; border-color: var(--blu);
+  box-shadow: 0 2px 8px var(--blu-glow), 0 1px 3px rgba(0,0,0,0.1);
+}
+.btn-primary:hover {
+  background: var(--blu2); border-color: var(--blu2);
+  box-shadow: 0 4px 18px var(--blu-glow), 0 2px 6px rgba(0,0,0,0.12);
+  transform: translateY(-1px);
+}
+.btn-primary:active { transform: translateY(0); box-shadow: 0 1px 4px var(--blu-glow2); }
+.btn-ghost {
+  background: none; color: var(--tx3);
+  border-color: var(--bdr2);
+}
+.btn-ghost:hover { background: var(--surf3); color: var(--tx2); border-color: var(--bdr3); }
+
+/* ─────────────────────────────────────────
+   TOAST
+───────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: var(--sp-6); right: var(--sp-6);
+  background: var(--surf);
+  border: 1px solid var(--bdr2);
+  border-radius: var(--r-xl);
+  padding: var(--sp-4) var(--sp-5);
+  box-shadow: var(--sh-lg);
+  display: flex; align-items: flex-start; gap: var(--sp-3);
+  max-width: 360px; width: 100%; z-index: 9999;
+  opacity: 0; pointer-events: none;
+  transform: translateY(20px) scale(0.96);
+  transition: all 300ms var(--ease);
+}
+.toast.show { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+.toast-ico {
+  width: 34px; height: 34px; border-radius: var(--r-md); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.toast-ico.ok  { background: var(--grn-lo); color: var(--grn); }
+.toast-ico.err { background: var(--red-lo); color: var(--red); }
+.toast-title { font-size: var(--tx-sm); font-weight: 700; color: var(--tx); margin-bottom: 2px; }
+.toast-body  { font-size: var(--tx-xs); color: var(--tx3); line-height: 1.5; }
+
+/* ─────────────────────────────────────────
+   SOBRE PAGE
+───────────────────────────────────────── */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-5); margin-top: var(--sp-6); }
+.info-card {
+  background: var(--surf); border: 1px solid var(--bdr);
+  border-radius: var(--r-2xl); padding: var(--sp-6);
+  box-shadow: var(--sh-sm);
+  transition: box-shadow var(--dur), border-color var(--dur);
+}
+.info-card:hover { box-shadow: var(--sh-md); border-color: var(--bdr2); }
+.info-card-ico {
+  width: 40px; height: 40px; border-radius: var(--r-md); margin-bottom: var(--sp-4);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--blu-lo); color: var(--blu);
+}
+.info-card h3 { font-family: var(--f-display); font-size: var(--tx-md); font-weight: 700; margin-bottom: var(--sp-2); }
+.info-card p  { font-size: var(--tx-sm); color: var(--tx3); line-height: 1.75; }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .g2, .g3 { grid-template-columns: 1fr; }
+  .s2, .s3 { grid-column: 1; }
+  .info-grid { grid-template-columns: 1fr; }
+  .content { padding: var(--sp-6); }
+  .topbar { padding: 0 var(--sp-5); }
+  .action-bar { flex-direction: column; align-items: stretch; }
+  .action-btns { justify-content: flex-end; }
+  .switcher { width: 100%; }
+  .sw-opt { flex: 1; justify-content: center; }
+}
+
+/* ── DYNAMIC CM ROWS ── */
+.cm-row {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr 0.7fr auto; /* overridden inline when tipo is shown */
+  gap: var(--sp-3);
+  align-items: end;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--surf2);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r-lg);
+  margin-bottom: var(--sp-3);
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+  animation: rowIn 200ms var(--ease) both;
+}
+@keyframes rowIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.cm-row:hover { border-color: var(--bdr2); background: var(--surf); }
+.cm-row-num {
+  grid-column: 1 / -1;
+  font-size: var(--tx-xs); font-weight: 700;
+  color: var(--tx3); letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: var(--sp-1); display: flex; align-items: center; gap: var(--sp-2);
+}
+.cm-row-num .n-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--blu-lo); color: var(--blu);
+  font-size: 10px; font-weight: 800;
+}
+.btn-remove-row {
+  width: 34px; height: 38px; flex-shrink: 0;
+  border-radius: var(--r-md);
+  border: 1.5px solid var(--bdr2);
+  background: none; color: var(--tx3);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; align-self: end;
+  transition: all var(--dur-fast);
+}
+.btn-remove-row:hover { background: var(--red-lo); color: var(--red); border-color: var(--red); }
+.btn-add-row {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  padding: 8px var(--sp-4);
+  border-radius: var(--r-md);
+  border: 1.5px dashed var(--bdr2);
+  background: none; color: var(--tx3);
+  font-size: var(--tx-sm); font-weight: 600;
+  cursor: pointer; width: 100%; justify-content: center;
+  transition: all var(--dur-fast);
+  margin-top: var(--sp-1);
+}
+.btn-add-row:hover {
+  border-color: var(--blu); color: var(--blu);
+  background: var(--blu-lo);
+}
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ─── SIDEBAR ─── -->
+  <aside class="sidebar" role="complementary">
+    <div class="sb-brand">
+      <div class="sb-logo">
+        <div class="sb-logo-mark">
+          <!-- Globo orb SVG logo -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-label="GloboExpress">
+            <ellipse cx="12" cy="12" rx="9.5" ry="9.5" stroke="white" stroke-width="1.5"/>
+            <ellipse cx="12" cy="12" rx="5.5" ry="5.5" stroke="rgba(255,255,255,0.7)" stroke-width="1.2"/>
+            <circle  cx="12" cy="12" r="1.8" fill="white"/>
+            <path d="M2.5 12 Q12 7 21.5 12" stroke="rgba(255,255,255,0.4)" stroke-width="1" fill="none"/>
+            <path d="M2.5 12 Q12 17 21.5 12" stroke="rgba(255,255,255,0.4)" stroke-width="1" fill="none"/>
+          </svg>
+        </div>
+        <div>
+          <div class="sb-name">Globo<span>Express</span></div>
+          <div class="sb-sub">Área de Exibição</div>
+        </div>
+      </div>
+      <div class="sb-pill">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 2H3v16h5l4 4 4-4h5V2z"/><path d="M9 9h6M9 13h4"/></svg>
+        Pay TV
+      </div>
+    </div>
+
+    <nav class="sb-nav">
+      <div class="sb-nav-label">Menu</div>
+      <button class="sb-nav-item active" onclick="showPage('form',this)">
+        <i data-lucide="file-plus-2" width="15" height="15"></i>
+        Solicitação
+      </button>
+      <button class="sb-nav-item" onclick="showPage('sobre',this)">
+        <i data-lucide="info" width="15" height="15"></i>
+        Sobre o sistema
+      </button>
+    </nav>
+
+    <div class="sb-footer">
+      <div class="sb-footer-txt">v1.0 &mdash; 2026</div>
+      <div class="sb-footer-dot" title="Online"></div>
+    </div>
+  </aside>
+
+  <!-- ─── RIGHT COLUMN ─── -->
+  <div class="right-col">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="breadcrumb">
+          <span>GloboExpress Pay TV</span>
+          <span class="bc-sep">/</span>
+          <span class="bc-cur" id="bc-cur">Solicitação</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="tb-btn" data-theme-toggle aria-label="Alternar tema"></button>
+        <div class="topbar-divider"></div>
+        <div class="user-chip">
+          <div class="user-ava">EX</div>
+          Exibição
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <!-- ══════════════════════════════
+           PAGE: SOLICITAÇÃO
+      ══════════════════════════════ -->
+      <div class="page active" id="page-form">
+
+        <div class="pg-header">
+          <div class="pg-tag">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            Express Pay TV
+          </div>
+          <h1 class="pg-title">GloboExpress <em>Pay TV</em></h1>
+          <p class="pg-desc">Registro de inclusão, exclusão ou alteração de comerciais após o fechamento do roteiro nos canais Pay TV.</p>
+        </div>
+
+        <!-- SWITCHER -->
+        <div class="switcher" role="group" aria-label="Tipo de operação">
+          <button class="sw-opt active" id="sw-inc" onclick="setType('inclusao')" aria-pressed="true">
+            <i data-lucide="plus-circle" width="14" height="14"></i>
+            Inclusão / Exclusão
+          </button>
+          <button class="sw-opt" id="sw-alt" onclick="setType('alteracao')" aria-pressed="false">
+            <i data-lucide="arrow-left-right" width="14" height="14"></i>
+            Alteração
+          </button>
+        </div>
+
+        <!-- ── CARD: DADOS GERAIS ── -->
+        <div class="fcard">
+          <div class="fcard-head">
+            <div class="fcard-icon blue"><i data-lucide="layout-list" width="17" height="17"></i></div>
+            <div>
+              <div class="fcard-title">Dados Gerais</div>
+              <div class="fcard-sub">Identificação da veiculação</div>
+            </div>
+          </div>
+          <div class="fcard-body">
+            <div class="g2">
+
+              <div class="field">
+                <label class="field-label" for="rp">RP <span class="req">*</span></label>
+                <input id="rp" class="inp" type="text" placeholder="Ex: 12345678" autocomplete="off">
+                <span class="ferr" id="e-rp"><i data-lucide="alert-circle" width="11" height="11"></i> Campo obrigatório</span>
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="cliente">Cliente <span class="req">*</span></label>
+                <input id="cliente" class="inp" type="text" placeholder="Nome do cliente" autocomplete="off">
+                <span class="ferr" id="e-cliente"><i data-lucide="alert-circle" width="11" height="11"></i> Campo obrigatório</span>
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="data">Data <span class="req">*</span></label>
+                <input id="data" class="inp" type="date">
+                <span class="ferr" id="e-data"><i data-lucide="alert-circle" width="11" height="11"></i> Campo obrigatório</span>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Sinal <span class="req">*</span></label>
+                <div class="ms" id="sinal-wrap">
+                  <div class="ms-trig" id="sinal-trig" tabindex="0" role="combobox" aria-expanded="false">
+                    <div class="ms-tags-row" id="sinal-display"><span class="ms-ph">Selecione o sinal...</span></div>
+                    <svg class="ms-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+                  </div>
+                  <div class="ms-drop" id="sinal-drop" role="listbox">
+                    <div class="ms-search-row">
+                      <i data-lucide="search" width="13" height="13"></i>
+                      <input class="ms-search-inp" id="sinal-search" type="text" placeholder="Buscar sinal..." autocomplete="off">
+                    </div>
+                    <div class="ms-list" id="sinal-list"></div>
+                  </div>
+                </div>
+                <input type="hidden" id="sinal" value="">
+                <span class="ferr" id="e-sinal"><i data-lucide="alert-circle" width="11" height="11"></i> Campo obrigatório</span>
+              </div>
+
+              <div class="field s2">
+                <label class="field-label">Canal <span class="req">*</span> <span class="note">(seleção múltipla)</span></label>
+                <div class="ms" id="ms-wrap">
+                  <div class="ms-trig" id="ms-trig" tabindex="0" role="combobox" aria-expanded="false">
+                    <div class="ms-tags-row" id="ms-tags"><span class="ms-ph">Selecione os canais...</span></div>
+                    <svg class="ms-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+                  </div>
+                  <div class="ms-drop" id="ms-drop" role="listbox" aria-multiselectable="true">
+                    <div class="ms-search-row">
+                      <i data-lucide="search" width="13" height="13"></i>
+                      <input class="ms-search-inp" id="ms-search" type="text" placeholder="Buscar canal..." autocomplete="off">
+                    </div>
+                    <div class="ms-list" id="ms-list"></div>
+                  </div>
+                </div>
+                <span class="ferr" id="e-canal"><i data-lucide="alert-circle" width="11" height="11"></i> Selecione ao menos um canal</span>
+              </div>
+
+              <div class="field s2">
+                <label class="field-label" for="programa">Programa ou Faixa <span class="req">*</span></label>
+                <input id="programa" class="inp" type="text" placeholder="Ex: Jornal Nacional, Faixa da manhã...">
+                <span class="ferr" id="e-programa"><i data-lucide="alert-circle" width="11" height="11"></i> Campo obrigatório</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- ── CARD: INCLUSÃO/EXCLUSÃO ── -->
+        <div class="fcard" id="card-inc">
+          <div class="fcard-head">
+            <div class="fcard-icon grn"><i data-lucide="film" width="17" height="17"></i></div>
+            <div>
+              <div class="fcard-title">Dados do Comercial</div>
+              <div class="fcard-sub">CM a ser incluído ou excluído na grade</div>
+            </div>
+          </div>
+          <div class="fcard-body">
+            <div id="inc-rows"></div>
+            <button class="btn-add-row" onclick="addIncRow()" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Adicionar CM
+            </button>
+            <span class="ferr" id="e-inc-rows" style="margin-top:var(--sp-2)"><i data-lucide="alert-circle" width="11" height="11"></i> Adicione ao menos um CM</span>
+          </div>
+        </div>
+
+        <!-- ── CARD: ALTERAÇÃO ── -->
+        <div id="card-alt" style="display:none">
+
+          <div class="fcard">
+            <div class="fcard-head">
+              <div class="fcard-icon red"><i data-lucide="arrow-up-from-line" width="17" height="17"></i></div>
+              <div>
+                <div class="fcard-title" style="color:var(--red)">CM que sai</div>
+                <div class="fcard-sub">Comercial a ser retirado do ar</div>
+              </div>
+            </div>
+            <div class="fcard-body">
+              <div id="sai-rows"></div>
+              <button class="btn-add-row" onclick="addSaiRow()" type="button">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Adicionar CM
+              </button>
+              <span class="ferr" id="e-sai-rows" style="margin-top:var(--sp-2)"><i data-lucide="alert-circle" width="11" height="11"></i> Adicione ao menos um CM</span>
+            </div>
+          </div>
+
+          <div class="fcard" style="margin-top:var(--sp-5)">
+            <div class="fcard-head">
+              <div class="fcard-icon grn"><i data-lucide="arrow-down-to-line" width="17" height="17"></i></div>
+              <div>
+                <div class="fcard-title" style="color:var(--grn)">CM que entra</div>
+                <div class="fcard-sub">Comercial a ser inserido no ar</div>
+              </div>
+            </div>
+            <div class="fcard-body">
+              <div id="entra-rows"></div>
+              <button class="btn-add-row" onclick="addEntraRow()" type="button">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Adicionar CM
+              </button>
+              <span class="ferr" id="e-entra-rows" style="margin-top:var(--sp-2)"><i data-lucide="alert-circle" width="11" height="11"></i> Adicione ao menos um CM</span>
+            </div>
+          </div>
+
+        </div><!-- /card-alt -->
+
+        <!-- ── ACTION BAR ── -->
+        <div class="action-bar">
+          <div class="action-hint">
+            <i data-lucide="zap" width="13" height="13" style="color:var(--blu)"></i>
+            Campos com <strong style="color:var(--red)">*</strong> são obrigatórios &mdash; envio via <strong>Power Automate → SharePoint</strong>
+          </div>
+          <div class="action-btns">
+            <button class="btn btn-ghost" onclick="clearForm()">
+              <i data-lucide="rotate-ccw" width="13" height="13"></i> Limpar
+            </button>
+            <button class="btn btn-primary" onclick="submitForm()">
+              <i data-lucide="send" width="13" height="13"></i> Enviar Solicitação
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /page-form -->
+
+
+      <!-- ══════════════════════════════
+           PAGE: SOBRE
+      ══════════════════════════════ -->
+      <div class="page" id="page-sobre">
+        <div class="pg-header">
+          <div class="pg-tag"><i data-lucide="info" width="10" height="10"></i> Sobre</div>
+          <h1 class="pg-title">Sobre o <em>Sistema</em></h1>
+          <p class="pg-desc">Documentação e informações técnicas do GloboExpress Pay TV.</p>
+        </div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-card-ico"><i data-lucide="tv-2" width="18" height="18"></i></div>
+            <h3>O que é?</h3>
+            <p>Sistema da Área de Exibição da Globo para registro de comerciais comprados após o fechamento do roteiro, ou para substituição de CMs já no ar em canais Pay TV.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-ico"><i data-lucide="workflow" width="18" height="18"></i></div>
+            <h3>Integração</h3>
+            <p>O envio aciona automaticamente um fluxo no <strong>Power Automate</strong> que cria um item na lista do <strong>SharePoint</strong> — sem cards manuais no Teams.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-ico"><i data-lucide="git-branch" width="18" height="18"></i></div>
+            <h3>Operações</h3>
+            <p><strong>Inclusão/Exclusão:</strong> adicionar ou retirar um CM da grade. <strong>Alteração:</strong> trocar um CM já veiculado por outro, registrando o que sai e o que entra.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-card-ico"><i data-lucide="shield-check" width="18" height="18"></i></div>
+            <h3>Versão</h3>
+            <p>GloboExpress Pay TV <strong>v1.0</strong><br>Área de Exibição &mdash; 2026</p>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div><!-- /right-col -->
+</div><!-- /app -->
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <div class="toast-ico ok" id="toast-ico"></div>
+  <div>
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-body"  id="toast-body"></div>
+  </div>
+</div>
+
+<script>
+/* ── THEME ── */
+(function(){
+  const btn = document.querySelector('[data-theme-toggle]');
+  const html = document.documentElement;
+  let t = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  html.setAttribute('data-theme', t);
+  setIco();
+  function setIco(){
+    if (!btn) return;
+    btn.innerHTML = t === 'dark'
+      ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`
+      : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+  }
+  btn && btn.addEventListener('click', ()=>{
+    t = t==='dark'?'light':'dark';
+    html.setAttribute('data-theme',t); setIco();
+  });
+})();
+
+lucide.createIcons();
+
+/* ── NAVIGATION ── */
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+  document.querySelectorAll('.sb-nav-item').forEach(b => b.classList.remove('active'));
+  const pg = document.getElementById('page-' + id);
+  pg.style.display = '';
+  requestAnimationFrame(() => pg.classList.add('active'));
+  btn.classList.add('active');
+  document.getElementById('bc-cur').textContent = btn.textContent.trim();
+  lucide.createIcons();
+}
+window.showPage = showPage;
+
+/* ── TYPE SWITCH ── */
+let currentType = 'inclusao';
+function setType(t) {
+  currentType = t;
+  const bI = document.getElementById('sw-inc');
+  const bA = document.getElementById('sw-alt');
+  const cI = document.getElementById('card-inc');
+  const cA = document.getElementById('card-alt');
+  if (t === 'inclusao') {
+    bI.classList.add('active');    bI.setAttribute('aria-pressed','true');
+    bA.classList.remove('active'); bA.setAttribute('aria-pressed','false');
+    cI.style.display = ''; cA.style.display = 'none';
+  } else {
+    bA.classList.add('active');    bA.setAttribute('aria-pressed','true');
+    bI.classList.remove('active'); bI.setAttribute('aria-pressed','false');
+    cI.style.display = 'none'; cA.style.display = '';
+  }
+  clearErrors();
+}
+window.setType = setType;
+
+/* ── MULTI-SELECT ── */
+const CANAIS = [
+  'BIS','CANAL BRASIL','GLOBONEWS','GLOBOPLAY NOVELAS','GLOOB','GLOOBINHO',
+  'GNT','MEGAPIX','MODO VIAGEM','MULTISHOW','OFF','PFC INTERNACIONAL',
+  'PREMIERE 1','PREMIERE 2','PREMIERE 3','PREMIERE 4','PREMIERE 5',
+  'PREMIERE FUTEBOL CLUBE','PREMIERE COMBATE 1','PREMIERE COMBATE 2',
+  'SPORTV','SPORTV 2','SPORTV 3','SPORTV 4','SPORTV 4K',
+  'TC ACTION','TC CULT','TC FUN','TC PIPOCA','TC PREMIUM','TC TOUCH'
+];
+let selCanais = [];
+
+function buildList(q='') {
+  const list = document.getElementById('ms-list');
+  list.innerHTML = '';
+  CANAIS.filter(c => c.toLowerCase().includes(q.toLowerCase())).forEach(c => {
+    const isSel = selCanais.includes(c);
+    const el = document.createElement('div');
+    el.className = 'ms-opt' + (isSel ? ' sel' : '');
+    el.setAttribute('role','option'); el.setAttribute('aria-selected', isSel);
+    el.dataset.v = c;
+    el.innerHTML = `<div class="ms-chk">${isSel ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>' : ''}</div><span>${c}</span>`;
+    el.addEventListener('mousedown', (e) => { e.preventDefault(); toggleC(c); });
+    list.appendChild(el);
+  });
+}
+
+function toggleC(c) {
+  const i = selCanais.indexOf(c);
+  if (i > -1) selCanais.splice(i, 1); else selCanais.push(c);
+  renderTags(); buildList(document.getElementById('ms-search').value);
+  document.getElementById('ms-trig').classList.remove('err');
+  document.getElementById('e-canal').classList.remove('show');
+}
+
+function renderTags() {
+  const el = document.getElementById('ms-tags');
+  el.innerHTML = selCanais.length
+    ? selCanais.map(c => `<span class="ms-tag">${c}<span class="ms-tag-x" onclick="rmC(event,'${c}')" aria-label="Remover ${c}">×</span></span>`).join('')
+    : '<span class="ms-ph">Selecione os canais...</span>';
+}
+window.rmC = function(e, c){ e.stopPropagation(); selCanais = selCanais.filter(x=>x!==c); renderTags(); buildList(); };
+
+const msTrig = document.getElementById('ms-trig');
+const msDrop = document.getElementById('ms-drop');
+function openDrop() {
+  buildList(document.getElementById('ms-search').value);
+  msDrop.classList.add('open');
+  msTrig.classList.add('open');
+  msTrig.setAttribute('aria-expanded','true');
+  document.getElementById('ms-search').focus();
+}
+
+function closeDrop() {
+  msDrop.classList.remove('open');
+  msTrig.classList.remove('open');
+  msTrig.setAttribute('aria-expanded','false');
+}
+
+msTrig.addEventListener('click', (e) => {
+  e.stopPropagation();
+  msDrop.classList.contains('open') ? closeDrop() : openDrop();
+});
+
+document.addEventListener('click', e => {
+  if (!document.getElementById('ms-wrap').contains(e.target) && !msDrop.contains(e.target)) {
+    closeDrop();
+  }
+});
+document.getElementById('ms-search').addEventListener('input', function(){ buildList(this.value); });
+buildList();
+
+
+/* ── MULTI-SELECT: SINAL ── */
+const SINAIS = [
+  'BELÉM','BELO HORIZONTE','BRASÍLIA','CAMPINAS','CURITIBA',
+  'FLORIANÓPOLIS','FORTALEZA','GOIÂNIA','MANAUS','PORTO ALEGRE',
+  'RECIFE','RIBEIRÃO PRETO','RIO DE JANEIRO','SÃO JOSÉ DOS CAMPOS',
+  'SALVADOR','SANTOS','SÃO PAULO','NACIONAL'
+];
+let selSinais = [];
+const sinalTrig = document.getElementById('sinal-trig');
+const sinalDrop = document.getElementById('sinal-drop');
+
+function renderSinalTags() {
+  const disp = document.getElementById('sinal-display');
+  if (!selSinais.length) { disp.innerHTML = '<span class="ms-ph">Selecione o sinal...</span>'; return; }
+  disp.innerHTML = selSinais.map(s => `<span class="ms-tag">${s}<span class="ms-tag-x" data-v="${s}">×</span></span>`).join('');
+  disp.querySelectorAll('.ms-tag-x').forEach(x => {
+    x.addEventListener('mousedown', (e) => {
+      e.stopPropagation(); e.preventDefault();
+      selSinais = selSinais.filter(v => v !== x.dataset.v);
+      document.getElementById('sinal').value = selSinais.join('; ');
+      renderSinalTags(); buildSinalList(document.getElementById('sinal-search').value);
+    });
+  });
+}
+
+function toggleSinal(s) {
+  const i = selSinais.indexOf(s);
+  if (i > -1) selSinais.splice(i, 1); else selSinais.push(s);
+  document.getElementById('sinal').value = selSinais.join('; ');
+  renderSinalTags(); buildSinalList(document.getElementById('sinal-search').value);
+  sinalTrig.classList.remove('err');
+  document.getElementById('e-sinal').classList.remove('show');
+}
+
+function buildSinalList(q='') {
+  const list = document.getElementById('sinal-list');
+  list.innerHTML = '';
+  SINAIS.filter(s => s.toLowerCase().includes(q.toLowerCase())).forEach(s => {
+    const isSel = selSinais.includes(s);
+    const el = document.createElement('div');
+    el.className = 'ms-opt' + (isSel ? ' sel' : '');
+    el.setAttribute('role','option'); el.setAttribute('aria-selected', isSel);
+    el.innerHTML = `<div class="ms-chk">${isSel ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>' : ''}</div><span>${s}</span>`;
+    el.addEventListener('mousedown', (e) => { e.preventDefault(); toggleSinal(s); });
+    list.appendChild(el);
+  });
+}
+
+function openSinalDrop() {
+  buildSinalList();
+  sinalDrop.classList.add('open');
+  sinalTrig.classList.add('open');
+  sinalTrig.setAttribute('aria-expanded','true');
+  document.getElementById('sinal-search').focus();
+}
+function closeSinalDrop() {
+  sinalDrop.classList.remove('open');
+  sinalTrig.classList.remove('open');
+  sinalTrig.setAttribute('aria-expanded','false');
+}
+
+sinalTrig.addEventListener('click', (e) => {
+  e.stopPropagation();
+  sinalDrop.classList.contains('open') ? closeSinalDrop() : openSinalDrop();
+});
+document.addEventListener('click', e => {
+  if (!document.getElementById('sinal-wrap').contains(e.target) && !sinalDrop.contains(e.target)) {
+    closeSinalDrop();
+  }
+});
+document.getElementById('sinal-search').addEventListener('input', function(){ buildSinalList(this.value); });
+buildSinalList();
+
+/* ── VALIDATION ── */
+function clearErrors() {
+  document.querySelectorAll('.ferr').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('.inp.err,.sel.err').forEach(e => e.classList.remove('err'));
+  msTrig.classList.remove('err');
+}
+function vReq(id, eid) {
+  const el = document.getElementById(id);
+  if (!el || !el.value.trim()) { el && el.classList.add('err'); document.getElementById(eid).classList.add('show'); return false; }
+  return true;
+}
+function validate() {
+  let ok = true;
+  ok = vReq('rp','e-rp') & ok;
+  ok = vReq('cliente','e-cliente') & ok;
+  ok = vReq('data','e-data') & ok;
+  if (!selSinais.length) { sinalTrig.classList.add('err'); document.getElementById('e-sinal').classList.add('show'); ok = false; } else { document.getElementById('e-sinal').classList.remove('show'); }
+  ok = vReq('programa','e-programa') & ok;
+  if (!selCanais.length) { msTrig.classList.add('err'); document.getElementById('e-canal').classList.add('show'); ok = false; }
+  if (currentType === 'inclusao') {
+    ok = validateRows('inc','e-inc-rows') & ok;
+  } else {
+    ok = validateRows('sai','e-sai-rows') & ok;
+    ok = validateRows('entra','e-entra-rows') & ok;
+  }
+  return !!ok;
+}
+
+document.querySelectorAll('.inp,.sel').forEach(el => {
+  el.addEventListener('input', () => {
+    if (el.value.trim()) {
+      el.classList.remove('err');
+      const e = document.getElementById('e-' + el.id);
+      if (e) e.classList.remove('show');
+    }
+  });
+});
+
+
+/* ── DYNAMIC CM ROWS ── */
+let incRowCount = 0, saiRowCount = 0, entraRowCount = 0;
+
+function createRowHTML(prefix, index, labelCM, labelTit, labelDur, showTipo=false) {
+  const n = index + 1;
+  const tipoField = showTipo ? `
+    <div class="field">
+      <label class="field-label">Tipo <span class="req">*</span></label>
+      <select class="sel cm-inp" data-prefix="${prefix}" data-idx="${index}" data-field="tipo">
+        <option value="">Selecione...</option>
+        <option value="Inclusão">Inclusão</option>
+        <option value="Exclusão">Exclusão</option>
+      </select>
+    </div>` : '';
+  const gridCols = showTipo
+    ? 'grid-template-columns: 0.8fr 1fr 1.4fr 0.7fr auto'
+    : 'grid-template-columns: 1fr 1.6fr 0.7fr auto';
+  return `
+  <div class="cm-row" id="${prefix}-row-${index}" style="${gridCols}">
+    <div class="cm-row-num" style="grid-column:1/-1">
+      <span class="n-badge">${n}</span> CM ${n}
+    </div>
+    ${tipoField}
+    <div class="field">
+      <label class="field-label">${labelCM} <span class="req">*</span></label>
+      <input class="inp cm-inp" type="text" placeholder="Código CM" data-prefix="${prefix}" data-idx="${index}" data-field="cm">
+    </div>
+    <div class="field">
+      <label class="field-label">${labelTit} <span class="req">*</span></label>
+      <input class="inp cm-inp" type="text" placeholder="Título do comercial" data-prefix="${prefix}" data-idx="${index}" data-field="titulo">
+    </div>
+    <div class="field">
+      <label class="field-label">${labelDur} <span class="req">*</span></label>
+      <input class="inp cm-inp" type="text" placeholder="Ex: 30s" data-prefix="${prefix}" data-idx="${index}" data-field="duracao">
+    </div>
+    <button class="btn-remove-row" onclick="removeRow('${prefix}',${index})" type="button" title="Remover CM" ${n === 1 ? 'style="visibility:hidden"' : ''}>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+    </button>
+  </div>`;
+}
+
+function refreshRemoveBtns(prefix) {
+  const rows = document.querySelectorAll(`#${prefix}-rows .cm-row`);
+  rows.forEach((row, i) => {
+    const btn = row.querySelector('.btn-remove-row');
+    if (btn) btn.style.visibility = rows.length === 1 ? 'hidden' : 'visible';
+  });
+}
+
+function addRow(prefix, labelCM, labelTit, labelDur, showTipo=false) {
+  const container = document.getElementById(prefix + '-rows');
+  const idx = container.querySelectorAll('.cm-row').length;
+  container.insertAdjacentHTML('beforeend', createRowHTML(prefix, idx, labelCM, labelTit, labelDur, showTipo));
+  refreshRemoveBtns(prefix);
+  lucide.createIcons();
+}
+
+function removeRow(prefix, idx) {
+  const row = document.getElementById(`${prefix}-row-${idx}`);
+  if (row) {
+    row.style.animation = 'none';
+    row.style.opacity = '0';
+    row.style.transform = 'translateY(-4px)';
+    row.style.transition = 'all 160ms ease';
+    setTimeout(() => {
+      row.remove();
+      // Re-index remaining rows
+      const container = document.getElementById(prefix + '-rows');
+      container.querySelectorAll('.cm-row').forEach((r, i) => {
+        r.id = `${prefix}-row-${i}`;
+        const badge = r.querySelector('.n-badge');
+        const label = r.querySelector('.cm-row-num');
+        if (badge) badge.textContent = i + 1;
+        if (label) label.childNodes[1].textContent = ` CM ${i + 1}`;
+        r.querySelectorAll('[data-idx]').forEach(el => el.dataset.idx = i);
+        const rmBtn = r.querySelector('.btn-remove-row');
+        if (rmBtn) rmBtn.setAttribute('onclick', `removeRow('${prefix}',${i})`);
+      });
+      refreshRemoveBtns(prefix);
+    }, 160);
+  }
+}
+window.removeRow = removeRow;
+
+function addIncRow()   { addRow('inc',   'CM',         'Título',         'Duração', true); }
+function addSaiRow()   { addRow('sai',   'CM que sai', 'Título que sai', 'Duração que sai'); }
+function addEntraRow() { addRow('entra', 'CM que entra','Título que entra','Duração que entra'); }
+window.addIncRow = addIncRow;
+window.addSaiRow = addSaiRow;
+window.addEntraRow = addEntraRow;
+
+function getRows(prefix) {
+  const rows = document.querySelectorAll(`#${prefix}-rows .cm-row`);
+  return Array.from(rows).map(row => {
+    const tipoEl = row.querySelector('[data-field="tipo"]');
+    return {
+      tipo:    tipoEl ? tipoEl.value.trim() : '',
+      cm:      row.querySelector('[data-field="cm"]').value.trim(),
+      titulo:  row.querySelector('[data-field="titulo"]').value.trim(),
+      duracao: row.querySelector('[data-field="duracao"]').value.trim(),
+    };
+  });
+}
+
+function validateRows(prefix, errId) {
+  const rows = getRows(prefix);
+  if (rows.length === 0) {
+    document.getElementById(errId).classList.add('show'); return false;
+  }
+  let ok = true;
+  document.querySelectorAll(`#${prefix}-rows .cm-inp`).forEach(inp => {
+    if (!inp.value.trim()) { inp.classList.add('err'); ok = false; }
+    else inp.classList.remove('err');
+  });
+  if (!ok) document.getElementById(errId).classList.add('show');
+  else     document.getElementById(errId).classList.remove('show');
+  return ok;
+}
+
+// Init first row on load
+addIncRow();
+addSaiRow();
+addEntraRow();
+
+/* ── SUBMIT ── */
+function submitForm() {
+  clearErrors();
+  if (!validate()) { showToast('err','Campos obrigatórios','Preencha todos os campos marcados com * antes de enviar.'); return; }
+  const p = {
+    tipo: currentType === 'inclusao' ? 'Inclusão/Exclusão' : 'Alteração',
+    rp: document.getElementById('rp').value.trim(),
+    cliente: document.getElementById('cliente').value.trim(),
+    data: document.getElementById('data').value,
+    canal: selCanais.join('; '),
+    sinal: document.getElementById('sinal').value,
+    programa: document.getElementById('programa').value.trim(),
+    timestamp: new Date().toISOString()
+  };
+  if (currentType === 'inclusao') {
+    p.comerciais = getRows('inc');
+  } else {
+    p.comerciais_saem  = getRows('sai');
+    p.comerciais_entram = getRows('entra');
+  }
+  console.log('[Power Automate Payload]', JSON.stringify(p, null, 2));
+
+  const PA_URL = 'SUA_URL_POWER_AUTOMATE'; // ← Cole aqui a URL do HTTP trigger após criar o fluxo
+
+  if (PA_URL === 'SUA_URL_POWER_AUTOMATE') {
+    // Modo simulação (sem URL configurada)
+    showToast('ok', 'Solicitação enviada! (simulação)', `RP: ${p.rp} | ${p.cliente} — configure a URL do Power Automate.`);
+    clearForm();
+    return;
+  }
+
+  const sendBtn = document.querySelector('.btn-primary');
+  sendBtn.disabled = true;
+  sendBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Enviando...';
+
+  fetch(PA_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(p)
+  })
+  .then(r => r.json())
+  .then(res => {
+    const proto = res.protocolo || '—';
+    showToast('ok', 'Solicitação registrada!', `Protocolo: ${proto} | RP: ${p.rp} | ${p.cliente}`);
+    clearForm();
+  })
+  .catch(() => {
+    showToast('err', 'Erro ao enviar', 'Não foi possível conectar ao Power Automate. Tente novamente.');
+  })
+  .finally(() => {
+    sendBtn.disabled = false;
+    sendBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Enviar Solicitação';
+  });
+}
+window.submitForm = submitForm;
+
+function clearForm() {
+  ['rp','cliente','data','programa'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  // Reset dynamic rows
+  ['inc','sai','entra'].forEach(p => {
+    const c = document.getElementById(p+'-rows'); if(c) c.innerHTML='';
+  });
+  addIncRow(); addSaiRow(); addEntraRow();
+  selCanais = []; renderTags(); buildList();
+  selSinais = []; document.getElementById('sinal').value = ''; renderSinalTags();
+  clearErrors();
+}
+window.clearForm = clearForm;
+
+/* ── TOAST ── */
+let _tt;
+function showToast(type, title, body) {
+  const toast = document.getElementById('toast');
+  const ico   = document.getElementById('toast-ico');
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-body').textContent  = body;
+  ico.className = 'toast-ico ' + type;
+  ico.innerHTML = type === 'ok'
+    ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`
+    : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+  toast.classList.add('show');
+  clearTimeout(_tt);
+  _tt = setTimeout(() => toast.classList.remove('show'), 5000);
+}
+
+/* ── INIT ── */
+document.getElementById('data').valueAsDate = new Date();
+lucide.createIcons();
+</script>
+</body>
+</html>
