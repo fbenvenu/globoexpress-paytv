@@ -1430,9 +1430,9 @@ function submitForm() {
   }
   console.log('[Power Automate Payload]', JSON.stringify(p, null, 2));
 
-  const PA_URL = https://defaulta7cdc4473b294b41b73e8a2cb54b06.c6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/fd023501866749449d169304aacc0ac7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_dntdJ32lgtdhCfpkZQWEbuq_PdRbvoIiQDsUUnwKhw
+  const PA_URL = 'https://defaulta7cdc4473b294b41b73e8a2cb54b06.c6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/fd023501866749449d169304aacc0ac7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_dntdJ32lgtdhCfpkZQWEbuq_PdRbvoIiQDsUUnwKhw'; // ← Cole aqui a URL do HTTP trigger após criar o fluxo
 
-  if (PA_URL === 'SUA_URL_POWER_AUTOMATE') {
+  if (PA_URL === 'https://defaulta7cdc4473b294b41b73e8a2cb54b06.c6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/fd023501866749449d169304aacc0ac7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_dntdJ32lgtdhCfpkZQWEbuq_PdRbvoIiQDsUUnwKhw') {
     // Modo simulação (sem URL configurada)
     showToast('ok', 'Solicitação enviada! (simulação)', `RP: ${p.rp} | ${p.cliente} — configure a URL do Power Automate.`);
     clearForm();
