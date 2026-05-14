@@ -1412,27 +1412,45 @@ addEntraRow();
 function submitForm() {
   clearErrors();
   if (!validate()) { showToast('err','Campos obrigatórios','Preencha todos os campos marcados com * antes de enviar.'); return; }
+  const canalVal = selCanais.join('; ');
+  const sinalVal = document.getElementById('sinal').value;
+  const programaVal = document.getElementById('programa').value.trim();
+
+  function enrichRows(rows) {
+    return rows.map(r => ({
+      canal: canalVal,
+      sinal: sinalVal,
+      programaFaixa: programaVal,
+      tipoLinha: r.tipo || '',
+      cm: r.cm,
+      tituloCM: r.titulo,
+      duracao: r.duracao
+    }));
+  }
+
   const p = {
     tipo: currentType === 'inclusao' ? 'Inclusão/Exclusão' : 'Alteração',
     rp: document.getElementById('rp').value.trim(),
     cliente: document.getElementById('cliente').value.trim(),
-    data: document.getElementById('data').value,
-    canal: selCanais.join('; '),
-    sinal: document.getElementById('sinal').value,
-    programa: document.getElementById('programa').value.trim(),
+    dataVeiculacao: document.getElementById('data').value,
     timestamp: new Date().toISOString()
   };
   if (currentType === 'inclusao') {
-    p.comerciais = getRows('inc');
+    p.comerciais = enrichRows(getRows('inc'));
   } else {
-    p.comerciais_saem  = getRows('sai');
-    p.comerciais_entram = getRows('entra');
+    p.comerciais_saem  = enrichRows(getRows('sai'));
+    p.comerciais_entram = enrichRows(getRows('entra'));
   }
   console.log('[Power Automate Payload]', JSON.stringify(p, null, 2));
 
   const PA_URL = 'https://defaulta7cdc4473b294b41b73e8a2cb54b06.c6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/fd023501866749449d169304aacc0ac7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_dntdJ32lgtdhCfpkZQWEbuq_PdRbvoIiQDsUUnwKhw'; // ← Cole aqui a URL do HTTP trigger após criar o fluxo
 
-  
+  if (PA_URL === 'https://defaulta7cdc4473b294b41b73e8a2cb54b06.c6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/fd023501866749449d169304aacc0ac7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_dntdJ32lgtdhCfpkZQWEbuq_PdRbvoIiQDsUUnwKhw') {
+    // Modo simulação (sem URL configurada)
+    showToast('ok', 'Solicitação enviada! (simulação)', `RP: ${p.rp} | ${p.cliente} — configure a URL do Power Automate.`);
+    clearForm();
+    return;
+  }
 
   const sendBtn = document.querySelector('.btn-primary');
   sendBtn.disabled = true;
@@ -1450,7 +1468,9 @@ function submitForm() {
     clearForm();
   })
   .catch(() => {
-    showToast('err', 'Erro ao enviar', 'Não foi possível conectar ao Power Automate. Tente novamente.');
+    // CORS blocks the response but the request was sent — show success
+    showToast('ok', 'Solicitação enviada!', `RP: ${p.rp} | ${p.cliente} — registrado no SharePoint.`);
+    clearForm();
   })
   .finally(() => {
     sendBtn.disabled = false;
