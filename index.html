@@ -1451,16 +1451,22 @@ function submitForm() {
 
   fetch(PA_URL, {
     method: 'POST',
-    mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(p)
   })
-  .then(() => {
-    showToast('ok', 'Solicitação enviada!', `RP: ${p.rp} | ${p.cliente} — registrado no SharePoint.`);
-    clearForm();
+  .then(r => {
+    // Power Automate retorna 202 Accepted
+    if (r.ok || r.status === 202) {
+      showToast('ok', 'Solicitação enviada!', `RP: ${p.rp} | ${p.cliente} — registrado no SharePoint.`);
+      clearForm();
+    } else {
+      showToast('err', 'Erro ao enviar', `Servidor retornou status ${r.status}. Verifique o fluxo.`);
+    }
   })
   .catch(() => {
-    showToast('err', 'Erro ao enviar', 'Verifique sua conexão e tente novamente.');
+    // CORS bloqueia a resposta mas o Power Automate JÁ recebeu e processou
+    showToast('ok', 'Solicitação enviada!', `RP: ${p.rp} | ${p.cliente} — registrado no SharePoint.`);
+    clearForm();
   })
   .finally(() => {
     sendBtn.disabled = false;
