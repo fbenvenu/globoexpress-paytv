@@ -1445,13 +1445,6 @@ function submitForm() {
 
   const PA_URL = 'https://defaulta7cdc4473b294b41b73e8a2cb54b06.c6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/fd023501866749449d169304aacc0ac7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_dntdJ32lgtdhCfpkZQWEbuq_PdRbvoIiQDsUUnwKhw'; // ← Cole aqui a URL do HTTP trigger após criar o fluxo
 
-  if (PA_URL === 'https://defaulta7cdc4473b294b41b73e8a2cb54b06.c6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/fd023501866749449d169304aacc0ac7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_dntdJ32lgtdhCfpkZQWEbuq_PdRbvoIiQDsUUnwKhw') {
-    // Modo simulação (sem URL configurada)
-    showToast('ok', 'Solicitação enviada! (simulação)', `RP: ${p.rp} | ${p.cliente} — configure a URL do Power Automate.`);
-    clearForm();
-    return;
-  }
-
   const sendBtn = document.querySelector('.btn-primary');
   sendBtn.disabled = true;
   sendBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Enviando...';
