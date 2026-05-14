@@ -1458,19 +1458,16 @@ function submitForm() {
 
   fetch(PA_URL, {
     method: 'POST',
+    mode: 'no-cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(p)
   })
-  .then(r => r.json())
-  .then(res => {
-    const proto = res.protocolo || '—';
-    showToast('ok', 'Solicitação registrada!', `Protocolo: ${proto} | RP: ${p.rp} | ${p.cliente}`);
+  .then(() => {
+    showToast('ok', 'Solicitação enviada!', `RP: ${p.rp} | ${p.cliente} — registrado no SharePoint.`);
     clearForm();
   })
   .catch(() => {
-    // CORS blocks the response but the request was sent — show success
-    showToast('ok', 'Solicitação enviada!', `RP: ${p.rp} | ${p.cliente} — registrado no SharePoint.`);
-    clearForm();
+    showToast('err', 'Erro ao enviar', 'Verifique sua conexão e tente novamente.');
   })
   .finally(() => {
     sendBtn.disabled = false;
