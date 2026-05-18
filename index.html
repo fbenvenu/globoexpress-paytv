@@ -1430,6 +1430,7 @@ function submitForm() {
 
   const p = {
     tipo: currentType === 'inclusao' ? 'Inclusão/Exclusão' : 'Alteração',
+    tipoLinha: currentType === 'inclusao' ? 'Inclusão' : 'Alteração',
     rp: document.getElementById('rp').value.trim(),
     cliente: document.getElementById('cliente').value.trim(),
     dataVeiculacao: document.getElementById('data').value,
@@ -1438,8 +1439,17 @@ function submitForm() {
   if (currentType === 'inclusao') {
     p.comerciais = enrichRows(getRows('inc'));
   } else {
-    p.comerciais_saem  = enrichRows(getRows('sai'));
-    p.comerciais_entram = enrichRows(getRows('entra'));
+    const sai = getRows('sai')[0] || {};
+    const entra = getRows('entra')[0] || {};
+    p.cmSai = sai.cm || '';
+    p.tituloCMSai = sai.titulo || '';
+    p.duracaoSai = sai.duracao || '';
+    p.cmEntra = entra.cm || '';
+    p.tituloCMEntra = entra.titulo || '';
+    p.duracaoEntra = entra.duracao || '';
+    p.canal = canalVal;
+    p.sinal = sinalVal;
+    p.programaFaixa = programaVal;
   }
   console.log('[Power Automate Payload]', JSON.stringify(p, null, 2));
 
