@@ -855,9 +855,15 @@ button { cursor: pointer; background: none; border: none; }
             <div class="g2">
 
               <div class="field">
-                <label class="field-label" for="rp">RP <span class="req">*</span></label>
+                <label class="field-label" for="rp">RP</label>
                 <input id="rp" class="inp" type="text" placeholder="Ex: 12345678" autocomplete="off">
                 <span class="ferr" id="e-rp"><i data-lucide="alert-circle" width="11" height="11"></i> Campo obrigatório</span>
+              </div>
+
+              <div class="field">
+                <label class="field-label" for="emailSolicitante">E-mail do Solicitante <span class="req">*</span></label>
+                <input id="emailSolicitante" class="inp" type="email" placeholder="Ex: nome@globo.com" autocomplete="off">
+                <span class="ferr" id="e-emailSolicitante"><i data-lucide="alert-circle" width="11" height="11"></i> Campo obrigatório</span>
               </div>
 
               <div class="field">
@@ -1252,7 +1258,7 @@ function vReq(id, eid) {
 }
 function validate() {
   let ok = true;
-  ok = vReq('rp','e-rp') & ok;
+  ok = vReq('emailSolicitante','e-emailSolicitante') & ok;
   ok = vReq('cliente','e-cliente') & ok;
   ok = vReq('data','e-data') & ok;
   if (!selSinais.length) { sinalTrig.classList.add('err'); document.getElementById('e-sinal').classList.add('show'); ok = false; } else { document.getElementById('e-sinal').classList.remove('show'); }
@@ -1425,6 +1431,7 @@ function submitForm() {
   const p = {
     tipo: currentType === 'inclusao' ? 'Inclusão/Exclusão' : 'Alteração',
     tipoLinha: currentType === 'inclusao' ? 'Inclusão' : 'Alteração',
+    emailSolicitante: document.getElementById('emailSolicitante').value.trim(),
     rp: document.getElementById('rp').value.trim(),
     cliente: document.getElementById('cliente').value.trim(),
     dataVeiculacao: document.getElementById('data').value,
@@ -1480,7 +1487,7 @@ function submitForm() {
 window.submitForm = submitForm;
 
 function clearForm() {
-  ['rp','cliente','data','programa'].forEach(id => {
+  ['emailSolicitante','rp','cliente','data','programa'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
   });
   // Reset dynamic rows
